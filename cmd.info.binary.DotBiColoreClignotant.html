@@ -1,0 +1,73 @@
+<!-- 
+paramètres : 
+- couleurTrue : 'bleue, jaune, verte, grise, orange, rouge' (defaut:verte)
+- couleurFalse : 'bleue, jaune, verte, grise, orange, rouge' (defaut:rouge)
+- blinkTrue : true, false (defaut:false)
+- blinkFalse : true, false (defaut:false)
+-->
+<div style="margin:0px; padding:0px; width:85px; height: 40px;" class="cmd cmd-align-left #history# container-fluid tooltips cmd-widget netatmodisplay" data-type="info" data-version="#version#" data-eqLogic_id="#eqLogic_id#" data-subtype="binary" data-cmd_id="#id#"
+  data-cmd_uid="#uid#">
+
+  <div class="content-sm">
+    <span class="imgCmd">
+		<img class='sma-binary-img sma-binary-img#id#' src='data/img/Led_verte.png'>
+    </span>
+  </div>
+  <div class="content-sm">
+    <span class="pull-right state sma-binary-value#id#"></span>
+  </div>
+
+<style>
+  .cmd-align-left{
+    text-align: left;
+  }
+  .sma-binary-img {
+    width:25px;
+  }
+  .sma-binary-value#id#{
+    font-size: 1.5em !important;
+    font-weight: bold;
+  }
+  @-webkit-keyframes blinker {
+    from {
+      opacity: 1.0;
+    }
+    to {
+      opacity: 0.0;
+    }
+  }
+</style>
+<script>
+  jeedom.cmd.update['#id#'] = function(_options) {
+    var cmd = $('.cmd[data-cmd_id=#id#]');
+    var valeur = _options.display_value;
+    if (valeur == true) {
+      var couleurTrue = ('#couleurTrue#' =='#'+'couleurTrue#') ? 'verte' : '#couleurTrue#';
+      var imageTrue = "data/img/Led_" + couleurTrue + ".png";
+	  var blinkTrue = ('#blinkTrue#'   !='#'+'blinkTrue#') ?   "#blinkTrue#"  : false;
+      cmd.find('.sma-binary-img#id#').attr("src", imageTrue);
+      if (blinkTrue){
+        cmd.find('.sma-binary-img#id#').css('animation', 'blinker 0.8s linear infinite');
+      }else{
+        cmd.find('.sma-binary-img#id#').css('animation', 'none');
+      }
+    } else {
+      var couleurFalse = ('#couleurFalse#' =='#'+'couleurFalse#') ? 'rouge' : '#couleurFalse#';
+      var imageFalse = "data/img/Led_" + couleurFalse + ".png";
+	  var blinkFalse = ('#blinkFalse#'   !='#'+'blinkFalse#') ?   "#blinkFalse#"  : false;
+      cmd.find('.sma-binary-img#id#').attr("src", imageFalse);
+      if (blinkFalse){
+        cmd.find('.sma-binary-img#id#').css('animation', 'blinker 0.8s linear infinite');
+      }else{
+        cmd.find('.sma-binary-img#id#').css('animation', 'none');
+      }
+    }
+  }
+  jeedom.cmd.update['#id#']({
+    display_value: '#state#',
+    valueDate: '#valueDate#',
+    collectDate: '#collectDate#',
+    alertLevel: '#alertLevel#'
+  });
+</script>
+</div>
