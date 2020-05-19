@@ -1,0 +1,189 @@
+<div class="cmd cmd-widget #history#" data-type="info" data-subtype="numeric" data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+  <div class="content-lg#id#">
+    <div class="progress cercle#id# val_deux#id#">
+      <span class="progress-left cercle-left#id#">
+        <span class="progress-bar cercle-bar#id#"></span>
+      </span>
+      <span class="cercle-right#id#">
+        <span class="cercle-bar#id#"></span>
+      </span>
+      <div class="cercle-value"><span class="cercle-value#id#"></span></div>
+    </div>
+  </div>
+
+<style>
+  :root {
+    --rouge: #f63a0f;
+    --orange: #f27011;
+    --jaune: #f2b01e;
+    --jaune_clair: #f2d31b;
+    --vert: #86e01e;
+    --noir: #000000;
+    --blanc: #ffffff;
+    --bleu: #00e6ff;
+    --degresd#id#: 0deg;
+    --degresg#id#: 0deg;
+    --couleuractualisee#id#: var(--noir);
+
+  }
+  .cmdName#id {
+      font-size:1em;
+      font-weight:bold;
+      vertical-align:middle;
+  }
+  .cercle#id# {
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    background: none;
+    margin: 0 auto;
+    box-shadow: none;
+    position: relative;
+  }
+
+  .cercle#id#:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 12px solid #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .cercle#id#>span {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+
+  .cercle#id# .cercle-left#id# {
+    left: 0;
+  }
+
+  .cercle#id# .cercle-bar#id# {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border-width: 12px;
+    border-style: solid;
+    position: absolute;
+    top: 0;
+  }
+
+  .cercle#id# .cercle-left#id# .cercle-bar#id# {
+    left: 100%;
+    border-top-right-radius: 80px;
+    border-bottom-right-radius: 80px;
+    border-left: 0;
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+  }
+
+  .cercle#id# .cercle-right#id# {
+    right: 0;
+  }
+
+  .cercle#id# .cercle-right#id# .cercle-bar#id# {
+    left: -100%;
+    border-top-left-radius: 80px;
+    border-bottom-left-radius: 80px;
+    border-right: 0;
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
+    animation: loading-1#id# 1.8s linear forwards;
+  }
+
+  .cercle#id# .cercle-value {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    background: #44484b;
+    font-size: 20px;
+    color: #fff;
+    line-height: 90px;
+    text-align: center;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+  }
+
+  .cercle#id#.val_deux#id# .cercle-bar#id# {
+    border-color: var(--couleuractualisee#id#);
+  }
+
+  .cercle#id#.val_deux#id# .cercle-left#id# .cercle-bar#id# {
+    animation: loading-2#id# 1.5s linear forwards 1.8s;
+  }
+
+  @keyframes loading-1#id# {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(var(--degresd#id#));
+      transform: rotate(var(--degresd#id#));
+    }
+  }
+  @keyframes loading-2#id# {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(var(--degresg#id#));
+      transform: rotate(var(--degresg#id#));
+    }
+  }
+  @media only screen and (max-width: 990px) {
+    .progress#id# {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+<script>
+  jeedom.cmd.update['#id#'] = function(_options) {
+    var cmd = $('.cmd[data-cmd_id=#id#]');
+    var valeurMinute = _options.display_value; 
+    valeur = parseFloat(valeurMinute * 100 / 60).toFixed(0);
+    
+    cmd.find('.content-sm#id#').hide();
+    cmd.find('.content-xs#id#').hide();
+    if(valeur > 50) {
+      document.documentElement.style.setProperty('--degresd#id#', '180deg');
+      document.documentElement.style.setProperty('--degresg#id#', ((valeur - 50) * 3.6) + 'deg');
+    } else {
+      document.documentElement.style.setProperty('--degresd#id#', (valeur * 3.6) + 'deg');
+      document.documentElement.style.setProperty('--degresg#id#', '0deg');
+    }
+	cmd.find('.cercle-value#id#').html(valeurMinute + ' min.'); 
+  
+    if(valeurMinute <=15) {
+      document.documentElement.style.setProperty('--couleuractualisee#id#', 'var(--vert');
+    }else if(valeurMinute>15 && valeurMinute <=20) {
+      document.documentElement.style.setProperty('--couleuractualisee#id#', 'var(--jaune_clair');
+    }else if(valeurMinute>20 && valeurMinute <=30) {
+      document.documentElement.style.setProperty('--couleuractualisee#id#', 'var(--jaune');
+    }else if(valeurMinute>30 && valeurMinute <=45) {
+      document.documentElement.style.setProperty('--couleuractualisee#id#', 'var(--orange');
+    }else if(valeurMinute>45 && valeurMinute <=60) {
+      document.documentElement.style.setProperty('--couleuractualisee#id#', 'var(--rouge');
+    }
+
+  }
+  jeedom.cmd.update['#id#']({
+    display_value: '#state#',
+    valueDate: '#valueDate#',
+    collectDate: '#collectDate#',
+    alertLevel: '#alertLevel#'
+  });
+</script>
+</div>
