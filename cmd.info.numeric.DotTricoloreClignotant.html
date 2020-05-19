@@ -1,0 +1,93 @@
+<!-- 
+paramètres : 
+- couleurNiveau1 : 'bleue, jaune, verte, grise, orange, rouge' (defaut:vert)
+- couleurNiveau2 : 'bleue, jaune, verte, grise, orange, rouge' (defaut:orange)
+- couleurNiveau3 : 'bleue, jaune, verte, grise, orange, rouge' (defaut:rouge)
+- valeurNiveau2 : valeur de passage au niveau 2 (>=valeurNiveau2 && <valeurNiveau3)
+- valeurNiveau3 : valeur de passage au niveau 3 (>=valeurNiveau3)
+- blinkNiveau1 : true, false (defaut:false)
+- blinkNiveau2 : true, false (defaut:false)
+- blinkNiveau3 : true, false (defaut:false)
+-->
+<div style="margin:0px; padding:0px; width:85px; height: 40px;" class="cmd cmd-align-left #history# container-fluid tooltips cmd-widget netatmodisplay" data-type="info" data-version="#version#" data-eqLogic_id="#eqLogic_id#" data-subtype="numeric" data-cmd_id="#id#"
+  data-cmd_uid="#uid#">
+
+  <div class="content-sm">
+    <span class="imgCmd">
+		<img class='sma-multi-img sma-multi-img#id#' src='data/img/Led_verte.png'>
+    </span>
+  </div>
+  <div class="content-sm">
+    <span class="pull-right state sma-multi-value#id#"></span>
+  </div>
+
+<style>
+  .cmd-align-left{
+    text-align: left;
+  }
+  .sma-multi-img {
+    width:25px;
+  }
+  .sma-multi-value#id#{
+    font-size: 1.5em !important;
+    font-weight: bold;
+  }
+  
+  @-webkit-keyframes blinker {
+    from {
+      opacity: 1.0;
+    }
+
+    to {
+      opacity: 0.0;
+    }
+  }
+</style>
+<script>
+  jeedom.cmd.update['#id#'] = function(_options) {
+    var cmd = $('.cmd[data-cmd_id=#id#]');
+    var valeur = _options.display_value;
+	var valeurNiveau2 = ('#valeurNiveau2#' =='#'+'valeurNiveau2#') ? 2 : parseInt('#valeurNiveau2#');
+	var valeurNiveau3 = ('#valeurNiveau3#' =='#'+'valeurNiveau3#') ? 3 : parseInt('#valeurNiveau3#');
+ 
+    if (valeur < valeurNiveau2) {
+      var couleurNiveau1 = ('#couleurNiveau1#' =='#'+'couleurNiveau1#') ? 'verte' : '#couleurNiveau1#';
+      var imageNiveau1 = "data/img/Led_" + couleurNiveau1 + ".png";
+      var blinkNiveau1 = ('#blinkNiveau1#' !='#'+'blinkNiveau1#') ? "#blinkNiveau1#"  : false;
+      cmd.find('.sma-multi-img#id#').attr("src", imageNiveau1);
+      if (blinkNiveau1){
+        cmd.find('.sma-multi-img#id#').css('animation', 'blinker 0.8s linear infinite');
+      }else{
+        cmd.find('.sma-multi-img#id#').css('animation', 'none');
+      }
+    } else if (valeur >= valeurNiveau2 && valeur < valeurNiveau3) {
+      var couleurNiveau2 = ('#couleurNiveau2#' =='#'+'couleurNiveau2#') ? 'orange' : '#couleurNiveau2#';
+      var imageNiveau2 = "data/img/Led_" + couleurNiveau2 + ".png";
+      var blinkNiveau2 = ('#blinkNiveau2#' !='#'+'blinkNiveau2#') ? "#blinkNiveau2#"  : false;
+      cmd.find('.sma-multi-img#id#').attr("src", imageNiveau2);
+      if (blinkNiveau2){
+        cmd.find('.sma-multi-img#id#').css('animation', 'blinker 0.8s linear infinite');
+      }else{
+        cmd.find('.sma-multi-img#id#').css('animation', 'none');
+      }
+    } else if (valeur >= valeurNiveau3) {
+      var couleurNiveau3 = ('#couleurNiveau3#' =='#'+'couleurNiveau3#') ? 'rouge' : '#couleurNiveau3#';
+      var imageNiveau3 = "data/img/Led_" + couleurNiveau3 + ".png";
+      var blinkNiveau3 = ('#blinkNiveau3#' !='#'+'blinkNiveau3#') ? "#blinkNiveau3#"  : false;
+      cmd.find('.sma-multi-img#id#').attr("src", imageNiveau3);
+      if (blinkNiveau3){
+        cmd.find('.sma-multi-img#id#').css('animation', 'blinker 0.8s linear infinite');
+      }else{
+        cmd.find('.sma-multi-img#id#').css('animation', 'none');
+      }
+    }
+    cmd.find('.sma-multi-value#id#').text(valeur);
+  }
+  jeedom.cmd.update['#id#']({
+    display_value: '#state#',
+    valueDate: '#valueDate#',
+    collectDate: '#collectDate#',
+    alertLevel: '#alertLevel#'
+  });
+</script>
+</div>
